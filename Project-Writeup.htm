@@ -1,0 +1,664 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"Header Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"Footer Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:.5in;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:.5in;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+span.HeaderChar
+	{mso-style-name:"Header Char";
+	mso-style-link:Header;}
+span.FooterChar
+	{mso-style-name:"Footer Char";
+	mso-style-link:Footer;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>Practical
+Machine Learning</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>Project
+Write-up</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>Summary:</span></b><span style='font-size:
+12.0pt;line-height:107%;font-family:"Times New Roman",serif'>  The purpose of
+this project is to use a machine learning algorithm to predict exercise mode.  
+Various sensors on the body of the person provide readings and these readings
+have to be used to <b><i>predict</i></b> the exercise mode.  In the dataset
+there are 5 exercise modes in the variable <i>classe</i>, titled A, B, C, D and
+E.   I spent MOST of the time cleaning up and understanding the data.  The raw
+data set had 160 variables, but many of the columns contained no information at
+all.  Also, some of the variables were numeric, but many variables were
+qualitative (e.g., name of individual).  I took a two phase approach to the
+project (to be described below).  The best algorithm was a <b>Random Forest
+algorithm</b>, which provided an <b>OUT-OF-SAMPLE classification accuracy</b>
+of about <b>94% on one particular TEST data set</b>.   CROSS VALIDATION was
+also performed by tuning the <b>trControl</b> parameter in the caret package.  <b>For
+the twenty test cases (much smaller TEST SAMPLE), this algorithm was PERFECT
+and predicted all twenty cases accurately.</b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>Machine Learning Algorithms:</span></b></p>
+
+<p class=MsoListParagraph style='text-indent:-.25in'><span style='font-size:
+12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>At least TWO machine learning algorithms were tried:
+a) a DECISION TREE (using method rpart) and b) a RANDOM FOREST (method = rf)</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>TRAINING AND TEST DATA SETS:</span></b></p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>The training data set provided for this project had
+19622 rows (and 160 columns).  These 19622 cases were further split into a
+“training” set consisting of 13737 observations and a “test” set consisting of
+5885 observations.  Note that this test set is an OUT-OF-SAMPLE test set and
+different from the 20 test cases provided for the project.  </span></b></p>
+
+<p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>Any cross-validation performed was therefore based
+upon the 13737 observations in the “training” set and the best cross-validated
+model was applied to the out-of-sample test data set (5885 observations).</span></b></p>
+
+<p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>The classification accuracy on the 5885 OUT-OF-SAMPLE
+test set was about 94% and the classification accuracy was 100% for the 20 test
+cases.</span></b></p>
+
+<p class=MsoListParagraphCxSpLast><b><span style='font-size:12.0pt;line-height:
+107%;font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>CROSS-VALIDATION:</span></b></p>
+
+<p class=MsoListParagraph style='text-indent:-.25in'><span style='font-size:
+12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>The best algorithm was the Random Forest.  The Caret
+package performs its own cross-validation, but in addition, cross-validation
+was “forced” using the following commands in the trControl parameter:</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'> fitControl &lt;- trainControl(method =
+&quot;repeatedcv&quot;, number = 5, repeats = 5)</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'> modFit.rf &lt;- train(classe ~
+pitch_forearm+pitch_arm+magnet_belt_y+magnet_belt_z+accel_arm_x+
+accel_forearm_x+ magnet_arm_x+ magnet_arm_y+ magnet_dumbbell_z+
+magnet_forearm_x, data=training2 , method = &quot;rf&quot;, trControl =
+fitControl, PROX=TRUE)</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>The cross-validation improved prediction
+accuracy just a little bit (when compared to directly using the RandomForest
+routine, without using Caret at all).</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoListParagraph style='text-indent:-.25in'><span style='font-size:
+12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'> </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>Description of Two Phase Approach taken
+for the Project:</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>PHASE 1: EXPLORATORY DATA ANALYSIS</span></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>This phase of the project took the most time.    Upon
+exploratory analysis, it was apparent that there were many columns of data that
+were empty, or had many missing values.  There were also some Nan variables
+(e.g., division by 0).  If an entire column was empty, the variable was dropped
+from the analysis.  I also tried using only quantitative variables in the
+prediction model.  A very preliminary random forest run with all variables took
+an inordinately long period of time to train the model.  Hence, it was clear
+that the features had to be pruned in some manner.  I created a quantitative
+variable to mimic the 5 classed (A = 1, B = 2 and so on).  <b>I performed a
+correlation analysis of the dependent variable against all of the features to
+see if any key predictors could be found.  </b>This exercise led to about 10
+predictors that seemed important as listed below (see APPENDIX FOR SOME
+EXPLORATORY PLOTS PERFORMED DURING THIS PHASE).</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>Sample Feature correlations with dependent variable
+(only some variables are included here for illustration):</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>&quot;magnet_belt_x&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] 0.030325</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] &quot;magnet_belt_y&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] -0.314773</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] &quot;magnet_belt_z&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] -0.154828</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] &quot;roll_arm&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] 0.04246</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] &quot;pitch_arm&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] -0.200614</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] &quot;yaw_arm&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>[1] 0.011793</span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>The final (extended) features selected
+from the exploratory analyses in PHASE 1 were: </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>pitch_forearm + pitch_arm + magnet_belt_y
++ magnet_belt_z + accel_arm_x +  accel_forearm_x +  magnet_arm_x + magnet_arm_y
++  magnet_dumbbell_z +  magnet_forearm_x</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>PHASE 2:</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>MODEL BUILDING:</span></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>Various machine learning algorithms were attempted in
+Phase 2.  The strategy can be summarized as:</span></p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>Create
+two feature sets, one <b>SIMPLE (with 4 features)</b> and one <b>EXTENDED </b>(with
+<i>all </i>the features identified at the end of Phase I).  The 4 features
+included in the <i>simple model</i> were <b>pitch_forearm + magnet_belt_y +
+magnet_belt_z + magnet_dumbbell_z.  These 4 features were selected based upon
+their correlations with the classe variable.</b></span></p>
+
+<p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>Try
+various machine learning algorithms in combination with these feature sets. 
+I’ll report on just two algorithms a) decision tree (the rpart method) and b)
+random forests (RandomForest method).</span></p>
+
+<p class=MsoListParagraphCxSpLast style='text-indent:-.25in'><span
+style='font-size:12.0pt;line-height:107%;font-family:"Times New Roman",serif'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>THE BEST COMBINATION WAS THE EXTENDED FEATURE SET AND
+THE RANDOM FOREST ALGORITHM (94% accuracy for the out-of-sample test set of
+size 5885 and a 100% accuracy for the TWENTY test cases provided in the project
+submission).</span></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>A) SAMPLE OUTPUTS FROM THE DECISION TREE
+(MACHINE LEARNING ALGORITHM 1)</span></u></b></p>
+
+<p class=MsoNormal>1) root 983 704 A (0.28 0.19 0.17 0.16 0.18)  </p>
+
+<p class=MsoNormal>2) pitch_forearm &lt; -31.7 90   1 A (0.99 0.011 0 0 0) *</p>
+
+<p class=MsoNormal>3) pitch_forearm &gt;= -31.7 893 703 A (0.21 0.21 0.19 0.18
+0.2)  </p>
+
+<p class=MsoNormal>6) magnet_belt_y &gt;= 555 812 622 A (0.23 0.23 0.21 0.18
+0.14)  </p>
+
+<p class=MsoNormal>12) magnet_dumbbell_z &lt;  -18.5 300 181 A (0.4 0.27 0.097
+0.17 0.06) *</p>
+
+<p class=MsoNormal>13) magnet_dumbbell_z &gt;= -18.5 512 369 C (0.14 0.21 0.28
+0.19 0.19)  </p>
+
+<p class=MsoNormal>26) magnet_belt_y &gt;= 592.5 376 257 C (0.1 0.21 0.32 0.24
+0.12) *</p>
+
+<p class=MsoNormal>27) magnet_belt_y &lt;  592.5 136  87 E (0.24 0.19 0.18
+0.037 0.36)*</p>
+
+<p class=MsoNormal>7) magnet_belt_y &lt;  555 81  14 E (0 0.012 0 0.16 0.83) *</p>
+
+<p class=MsoNormal><b>The decision tree algorithm provided a poor classification
+accuracy of only about 48%.</b></p>
+
+<p class=MsoNormal>Here is a cross-tabulation to illustrate:</p>
+
+<p class=MsoNormal><b>predtree</b>                             <b>A            B   
+         C             D            E</b></p>
+
+<p class=MsoNormal>       A                                    3309      650        278 
+      207        256</p>
+
+<p class=MsoNormal>       B                                    431        582  
+     23            45          60</p>
+
+<p class=MsoNormal>       C                                    709        1091      1554 
+    624        473</p>
+
+<p class=MsoNormal>       D                                   548        705        720
+       1567      657</p>
+
+<p class=MsoNormal>       E                                    304        579        675 
+      612        1980</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>B) PERFORMANCE OF RANDOM FORESTS (MACHINE
+LEARNING ALGORITHM 2)</span></u></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>THREE SUB-CASES WERE CONSIDERED WITHIN
+RANDOM FOREST</span></u></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>B- RF-CASE 1:  The Random Forest built
+DIRECTLY using the randomForest function (i.e., no use of CARET)</span></u></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>The random forest algorithm did much
+better (than rpart) and provided a classification accuracy (for a test data set
+held out from the training sample) of about 94%.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>Here is some sample output (<b>confusion Matrix</b>) from
+the random forest procedure.</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>       </span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>yhat.rf                        1                      2  
+                    3                     4                      5</span></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>      <b>A</b>                           <b>1622</b>  
+             45                    3                      6                      4</span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      B</span></b><span style='font-size:
+12.0pt;line-height:107%;font-family:"Times New Roman",serif'>                           26
+                   <b>1040 </b>               26                    7                      16</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>      <b>C </b>                          10                    36 
+                  <b>962 </b>                 46                    18</span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      D</span></b><span style='font-size:
+12.0pt;line-height:107%;font-family:"Times New Roman",serif'>                           12  
+                 12                    25                    <b>889   </b>               23</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>      <b>E</b>                           4                      6  
+                   10                    16                    <b>1021</b></span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>The above confusion Matrix can be summarized by adding
+the diagonal elements where there is agreement in the predictions as below
+(TRUE = agreement):</span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>Mode   FALSE    TRUE    NA's </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>logical     351    5534       0</span></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>So the accuracy is 5534/(5534+351) = 94%
+for this specific cross validation procedure only.  </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>B- RF-CASE 2:  The Random Forest built
+using CARET, but with DEFAULT Caret cross validation:</span></u></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>CROSS-VALIDATION:  This accuracy can be
+improved (very slightly) by K-fold cross-validation, however for the twenty
+test cases, this Random Forest algorithm was sufficient to get 100% accuracy.</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>The same Random Forest Model was built
+using CARET (with default CROSS VALIDATION controlled by CARET itself).  The
+results were marginally better, but not by much (320 false vs. 351).  This
+model too had a 100% prediction accuracy for the 20 TEST cases.</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>CASE 2: CROSS-VALIDATION WITH DEFAULT SETTINGS
+IN CARET:  Training data set size = 13737 records</span></u></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>OUT OF SAMPLE ERROR CALCULATION FOR TEST
+SET WITH 5585 OBSERVATIONS</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>   Mode   FALSE    TRUE    NA's </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>logical     320    5565       0 </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>  CONFUSION MATRIX:     </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>yhat.rf            1          2          3   
+      4          5</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      A               1634   37         2   
+      7          5</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      B               17        1061  
+29         5          14</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      C                9          29       961  
+   57        19</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      D               11        8          21 
+      884      19</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      E               3           4         13  
+     11        1025</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>B- RF-CASE 3:  The Random Forest built
+using CARET, but an attempt was made to control the cross validation procedure
+with the trControl parameter in caret:</span></u></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>The setting of the trControl can be
+described in these lines of code:</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'># SET UP PARAMETER FOR CROSS VALIDATION -
+fitControl passed to TRAIN later</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'> fitControl &lt;- trainControl(method =
+&quot;repeatedcv&quot;, number = 5, repeats = 5)</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'> modFit.rf &lt;- train(classe ~
+pitch_forearm+pitch_arm+magnet_belt_y+magnet_belt_z+accel_arm_x+
+accel_forearm_x+ magnet_arm_x+ magnet_arm_y+ magnet_dumbbell_z+
+magnet_forearm_x, data=training2 , method = &quot;rf&quot;, trControl =
+fitControl, PROX=TRUE)</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>CASE 3 - CROSS VALIDATION CONTROLLED USING
+TR CONTROL:</span></u></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>Mode   FALSE    TRUE    NA's </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>logical     321    5564       0 </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>       </span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>yhat.rf                        1          2   
+      3          4          5</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      A                           1627  
+36         3          8          3</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      B                           21        1062  
+27         7          14</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      C                           9          27 
+      962      55        20</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      D                            14        10  
+     23        887      19</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>      E                           3          4  
+       11        7          1026</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'> We can conclude that cross validation
+using CARET improved the prediction accuracy somewhat.</span></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>FINAL PREDICTION FOR THE 20 TEST CASES:</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>This final discussion pertains to the prediction for
+the 20 test cases provided in the project.  The best random forest algorithm
+was applied to these twenty cases.  The prediction provided for these twenty
+cases was completely accurate (as verified by the Project submission scorecard
+system using twenty text files with the answers).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>Predictions for the 20 test cases:</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'> B A B A A E D B A A B C B A E E A B B B</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>APPENDIX (EXPLORATORY PLOTS DURING DATA
+ANALYSIS):</span></u></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>SAMPLE EXPLORATORY PLOTS (OBTAINED DURING EXPLORATORY
+ANALYSES):</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>PLOT 1:  TWO DIMENSIONAL PLOT OF
+ACCEL_ARM_X vs. MAGNET_ARM_X WITH DEPENDENT VARIABLE COLORED (magnet_arm_x is
+strongly correlated with dependent variable)</span></u></b></p>
+
+<p class=MsoNormal><img width=1050 height=1050 id="Picture 1"
+src="Project-Writeup_files/image001.jpg"></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>PLOT 2: MAGNET_BELT_Y VS. NEWCLASSE</span></u></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'><span style='text-decoration:none'>&nbsp;</span></span></u></b></p>
+
+<p class=MsoNormal><img width=1050 height=1050 id="Picture 2"
+src="Project-Writeup_files/image002.jpg"></p>
+
+<p class=MsoNormal><b><span style='font-size:12.0pt;line-height:107%;
+font-family:"Times New Roman",serif'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b>&nbsp;</b></p>
+
+<p class=MsoNormal><b>&nbsp;</b></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:107%;font-family:
+"Times New Roman",serif'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>
