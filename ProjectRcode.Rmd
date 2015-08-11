@@ -4,11 +4,11 @@ output: html_document
 ---
 
 This is an R Markdown document for the PRACTICAL MACHINE LEARNING PROJECT
+'directory' is a character vector of length 1 indicating the location of the CSV files (the directory where the action takes place)
 
 ```{r}
 pmlproject3 <- function(directory) {
-  ## 'directory' is a character vector of length 1 indicating
-  ## the location of the CSV files (the directory where the action takes place)
+  
   
   setwd(directory)
   
@@ -89,9 +89,9 @@ pmlproject3 <- function(directory) {
     }
   }
   
-  # PLOT VARS IN THE SMALLER TESTING DATA SET
-  print(qplot(accel_arm_x, magnet_arm_x, color = newclasse, data = testing))
-  print(qplot(magnet_belt_y, newclasse, color = newclasse, data = testing))
+
+  qplot(accel_arm_x, magnet_arm_x, color = newclasse, data = testing)
+  qplot(magnet_belt_y, newclasse, color = newclasse, data = testing)
   
   # NOW ADD BACK THE CLASSE FACTOR VARIABLE
   # CHANGE CLASSE AND NEWCLASSE TO FACTORS TO RUN TREE CLASSIFICATION METHODS
@@ -137,9 +137,9 @@ pmlproject3 <- function(directory) {
   # NOW TEST THE FITTED MODEL USING TESTING2 (OUT OF SAMPLE ERROR FOUND HERE)
   yhat.rf = predict(modFit.rf, type="response", newdata = testing2)
   testing2$predRight <- (yhat.rf == testing2$classe)
-  print(summary(testing2$predRight))
+  summary(testing2$predRight)
   # PRINT a TABLE OF CROSS VALIDATION ACCURACY
-  print(table(yhat.rf, testing2$newclasse))
+  table(yhat.rf, testing2$newclasse)
   
   
   # NOW MAKE PREDICTIONS FOR NEW DATA SET
